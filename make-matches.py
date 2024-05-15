@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import re
+import numpy as np
 
 st.title('Last Chance Dance Matches')
 
@@ -114,7 +115,9 @@ if google_sheet_input:
 		hail_mary_data = []
 		for current_netid, current_row in netid_to_row.items():
 			try:
-				hail_mary_netid = current_row[hail_mary_column]
+				hail_mary_netid = current_row.get(hail_mary_column, None)
+				if pd.isna(hail_mary_netid) or hail_mary_netid == '' or hail_mary_netid in ['nan', 'NaN']:
+					continue
 				if hail_mary_netid in netid_to_row:
 					hail_mary_data.append({
 						"NetID": hail_mary_netid,
@@ -127,15 +130,14 @@ if google_sheet_input:
 						"Sender's Email": current_row[email_column]
 					})
 				else:
-						hail_mary_not_found.append(hail_mary_netid)
+					hail_mary_not_found.append(hail_mary_netid)
 			except KeyError:
 					hail_mary_not_found.append(hail_mary_netid)
 		hail_mary_df = pd.DataFrame(hail_mary_data)
 		st.table(hail_mary_df)
 
-		if hail_mary_not_found:
-			st.subheader('Hail Mary NetIDs Not Found')
-			st.write(', '.join(hail_mary_not_found))
+		st.subheader('Hail Mary NetIDs Not Found')
+		st.write(hail_mary_not_found)
 
 		# Generate CSVs
 		romantic_matches_csv = pd.DataFrame([", ".join(pair) for pair in romantic_matches_pairs], columns=['Romantic Matches'])
