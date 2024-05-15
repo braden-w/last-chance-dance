@@ -8,9 +8,9 @@ google_sheet_input = st.text_input('Enter the public Google Sheet URL or Sheet I
 
 def extract_sheet_id(input_string):
 	# Regular expression to extract Sheet ID from the full URL or directly use the ID
-	match = re.search(r'/spreadsheets/d/([a-zA-Z0-9-_]+)', input_string)
-	if match:
-		return match.group(1)
+	regex_match = re.search(r'/spreadsheets/d/([a-zA-Z0-9-_]+)', input_string)
+	if regex_match:
+		return regex_match.group(1)
 	elif re.match(r'^[a-zA-Z0-9-_]+$', input_string):
 		return input_string
 	return None
