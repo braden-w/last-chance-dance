@@ -58,6 +58,10 @@ if google_sheet_input:
 		for match_type, match_dict in matches.items():
 			st.subheader(f'{match_type.capitalize()} Results')
 			for netid, netid_matches in match_dict.items():
-				st.write(f'{netid}: {", ".join(netid_matches) if netid_matches else "No matches found"}')
+				if netid_matches:
+					st.write(f'{index_data[netid][name_column]} ({netid}) matched with:')
+					for match in netid_matches:
+						st.write(f'\t{index_data[match][name_column]} ({match})')
+	
 	else:
 		st.error('Invalid Google Sheet URL or Sheet ID. Please enter a valid Google Sheet URL or Sheet ID.')
