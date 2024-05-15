@@ -33,35 +33,39 @@ if google_sheet_input:
 		index_data = {row[netid_column]: row for index, row in data.iterrows()}
 
 		# Dictionary to store matches
-		matches = {
-			'romantic_matches': {},
-			'platonic_matches': {}
-		}
+		display_data = []
 
 		for netid, row in index_data.items():
+			romantic_match_names = []
+			platonic_match_names = []
+
 			# Get romantic matches
 			try:
 				romantic_netids = row[romantic_matches_column].split('\n')
 				romantic_match_found = [match for match in romantic_netids if netid in index_data.get(match, {}).get(romantic_matches_column, '').split('\n')]
-				matches['romantic_matches'][netid] = romantic_match_found
+				romantic_match_names = [index_data[match][name_column] for match in romantic_match_found]
 			except AttributeError:
-				matches['romantic_matches'][netid] = []
+				romantic_match_names = []
 
 			# Get platonic matches
 			try:
 				platonic_netids = row[platonic_matches_column].split('\n')
 				platonic_match_found = [match for match in platonic_netids if netid in index_data.get(match, {}).get(platonic_matches_column, '').split('\n')]
-				matches['platonic_matches'][netid] = platonic_match_found
+				platonic_match_names = [index_data[match][name_column] for match in platonic_match_found]
 			except AttributeError:
-				matches['platonic_matches'][netid] = []
-		# Display matches in Streamlit
-		for match_type, match_dict in matches.items():
-			st.subheader(f'{match_type.capitalize()} Results')
-			for netid, netid_matches in match_dict.items():
-				if netid_matches:
-					st.write(f'{index_data[netid][name_column]} ({netid}) matched with:')
-					for match in netid_matches:
-						st.write(f'\t{index_data[match][name_column]} ({match})')
-	
+				platonic_match_names = []
+
+			# Prepare data for display
+			display_data.append({
+				'Name': row[name_column],
+				'NetID': netid,
+				'Email': row[email_column],
+				'Romantic Matches': "\n".join(romantic_match_names),
+				'Platonic Matches': "\n".join(platonic_match_names)
+			})
+
+		display_df = pd.DataFrame(display_data)
+		st.table(display_df)
+
 	else:
 		st.error('Invalid Google Sheet URL or Sheet ID. Please enter a valid Google Sheet URL or Sheet ID.')
