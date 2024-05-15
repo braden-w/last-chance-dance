@@ -118,9 +118,11 @@ if google_sheet_input:
 					hail_mary_data.append({
 						"NetID": hail_mary_netid,
 						"Receiver's Email": netid_to_row[hail_mary_netid][email_column],
-						"Receiver's Name": netid_to_row[hail_mary_netid][name_column].replace(',', ''),
+						"Receiver's First Name": netid_to_row[hail_mary_netid][name_column].split(', ')[0],
+						"Receiver's Last Name": netid_to_row[hail_mary_netid][name_column].split(', ')[1] if len(netid_to_row[hail_mary_netid][name_column].split(', ')) > 1 else "",
 						"Sender's NetID": current_netid,
-						"Sender's Name": current_row[name_column].replace(',', ''),
+						"Sender's First Name": current_row[name_column].split(', ')[0],
+						"Sender's Last Name": current_row[name_column].split(', ')[1] if len(current_row[name_column].split(', ')) > 1 else "",
 						"Sender's Email": current_row[email_column]
 					})
 			except KeyError:
