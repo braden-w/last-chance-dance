@@ -105,17 +105,17 @@ if google_sheet_input:
 		platonic_df = pd.DataFrame(platonic_matches_data)
 		st.table(platonic_df)
 
-		st.subheader('Hail Mary')
+		st.subheader('These People Received Hail Mary')
 		hail_mary_data = []
 		for current_netid, current_row in netid_to_row.items():
 			try:
 				hail_mary_netid = current_row[hail_mary_column]
 				if hail_mary_netid in netid_to_row:
 					hail_mary_data.append({
-						'NetID': current_netid,
-						'Name': current_row[name_column],
-						'Email': current_row[email_column],
-						'Hail Mary': f"{netid_to_row[hail_mary_netid][name_column]} ({netid_to_row[hail_mary_netid][email_column]})"
+						"NetID": hail_mary_netid,
+						"Name": netid_to_row[hail_mary_netid][name_column],
+						"Email": netid_to_row[hail_mary_netid][email_column],
+						"Hail Mary Received From": f"{current_row[name_column]} ({current_row[email_column]})"
 					})
 			except KeyError:
 				continue
