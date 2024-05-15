@@ -36,42 +36,42 @@ if google_sheet_input:
 		display_data = []
 
 		for current_netid, current_row in netid_to_row.items():
-			romantic_matches = []
-			platonic_matches = []
+			current_romantic_matches = []
+			current_platonic_matches = []
 
 			# Get romantic matches
 			try:
 				romantic_netids = current_row[romantic_matches_column].split('\n')
-				romantic_matches = [{
+				current_romantic_matches = [{
 						'NetID': romantic_netid,
 						'Name': netid_to_row[romantic_netid][name_column],
 						'Email': netid_to_row[romantic_netid][email_column]
 				} for romantic_netid in romantic_netids if romantic_netid in netid_to_row and current_netid in netid_to_row.get(romantic_netid, {}).get(romantic_matches_column, '').split('\n')]
 			except AttributeError:
-				romantic_matches = []
+				current_romantic_matches = []
 
 			# Get platonic matches
 			try:
 				platonic_netids = current_row[platonic_matches_column].split('\n')
-				platonic_matches = [{
+				current_platonic_matches = [{
 						'NetID': platonic_netid,
 						'Name': netid_to_row[platonic_netid][name_column],
 						'Email': netid_to_row[platonic_netid][email_column]
 				} for platonic_netid in platonic_netids if platonic_netid in netid_to_row and current_netid in netid_to_row.get(platonic_netid, {}).get(platonic_matches_column, '').split('\n')]
 			except AttributeError:
-				platonic_matches = []
+				current_platonic_matches = []
 
 			# Prepare data for display
 			display_data.append({
 				'Name': current_row[name_column],
 				'NetID': current_netid,
 				'Email': current_row[email_column],
-				'Romantic Matches (NetIDs)': "\n".join([match['NetID'] for match in romantic_matches]),
-				'Romantic Matches (Names)': "\n".join([match['Name'] for match in romantic_matches]),
-				'Romantic Matches (Emails)': "\n".join([match['Email'] for match in romantic_matches]),
-				'Platonic Matches (NetIDs)': "\n".join([match['NetID'] for match in platonic_matches]),
-				'Platonic Matches (Names)': "\n".join([match['Name'] for match in platonic_matches]),
-				'Platonic Matches (Emails)': "\n".join([match['Email'] for match in platonic_matches])
+				'Romantic Matches (NetIDs)': "\n".join([match['NetID'] for match in current_romantic_matches]),
+				'Romantic Matches (Names)': "\n".join([match['Name'] for match in current_romantic_matches]),
+				'Romantic Matches (Emails)': "\n".join([match['Email'] for match in current_romantic_matches]),
+				'Platonic Matches (NetIDs)': "\n".join([match['NetID'] for match in current_platonic_matches]),
+				'Platonic Matches (Names)': "\n".join([match['Name'] for match in current_platonic_matches]),
+				'Platonic Matches (Emails)': "\n".join([match['Email'] for match in current_platonic_matches])
 			})
 
 		# Filter out participants who did not get any matches
