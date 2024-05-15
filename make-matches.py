@@ -74,8 +74,12 @@ if google_sheet_input:
 				'Platonic Matches (Emails)': "\n".join([m['Email'] for m in platonic_matches])
 			})
 
+		# Filter out participants who did not get any matches
 		display_df = pd.DataFrame(display_data)
+		display_df = display_df[(display_df['Romantic Matches (NetIDs)'] != '') | (display_df['Platonic Matches (NetIDs)'] != '')]
 		st.table(display_df)
+		# Display count
+		st.write(f'Total number of rows: {len(display_df)}')
 
 	else:
 		st.error('Invalid Google Sheet URL or Sheet ID. Please enter a valid Google Sheet URL or Sheet ID.')
