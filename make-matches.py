@@ -4,7 +4,7 @@ import re
 
 st.title('Last Chance Dance Matches')
 
-google_sheet_input = st.text_input('Enter the public Google Sheet URL or Sheet ID')
+google_sheet_input = st.text_input('Enter the public Google Sheet URL or Sheet ID. Google Sheet must be public to anyone with the link for this app to work.')
 
 def extract_sheet_id(input_string):
 	# Regular expression to extract Sheet ID from the full URL or directly use the ID
@@ -82,4 +82,4 @@ if google_sheet_input:
 		st.write(f'Total number of rows: {len(display_df)}')
 
 	else:
-		st.error('Invalid Google Sheet URL or Sheet ID. Please enter a valid Google Sheet URL or Sheet ID.')
+		st.error('Invalid Google Sheet URL or Sheet ID. Please enter a valid Google Sheet URL or Sheet ID, and make sure the Google Sheet is public to anyone with the link.')
