@@ -136,7 +136,7 @@ if google_sheet_input:
 		platonic_matches_csv = pd.DataFrame([", ".join(pair) for pair in platonic_matches_pairs], columns=['Platonic Matches'])
 		platonic_matches_csv.to_csv('platonic_matches.csv', index=False)
 
-		hail_mary_csv = hail_mary_df[["Receiver's Email", "Receiver's Name", "Sender's Name", "Sender's NetID", "Sender's Email"]]
+		hail_mary_csv = hail_mary_df[["Receiver's Email", "Receiver's First Name",  "Receiver's Last Name", "Sender's First Name", "Sender's Last Name", "Sender's NetID", "Sender's Email"]]
 		hail_mary_csv.to_csv('hail_mary_matches.csv', index=False)
 
 		st.subheader('Download CSVs')
