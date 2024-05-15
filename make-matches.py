@@ -81,5 +81,46 @@ if google_sheet_input:
 		# Display count
 		st.write(f'Total number of rows: {len(display_df)}')
 
+		st.subheader('Romantic Matches')
+		romantic_matches_data = []
+		for row in display_data:
+			if row['Romantic Matches (Names)']:
+				romantic_matches_data.append({
+					'Name': row['Name'],
+					'Email': row['Email'],
+					'Romantic Matches': row['Romantic Matches (Names)']
+				})
+		romantic_df = pd.DataFrame(romantic_matches_data)
+		st.table(romantic_df)
+
+		st.subheader('Platonic Matches')
+		platonic_matches_data = []
+		for row in display_data:
+			if row['Platonic Matches (Names)']:
+				platonic_matches_data.append({
+					'Name': row['Name'],
+					'Email': row['Email'],
+					'Platonic Matches': row['Platonic Matches (Names)']
+				})
+		platonic_df = pd.DataFrame(platonic_matches_data)
+		st.table(platonic_df)
+
+		st.subheader('Hail Mary')
+		hail_mary_data = []
+		for current_netid, current_row in netid_to_row.items():
+			try:
+				hail_mary_netid = current_row[hail_mary_column]
+				if hail_mary_netid in netid_to_row:
+					hail_mary_data.append({
+						'NetID': current_netid,
+						'Name': current_row[name_column],
+						'Email': current_row[email_column],
+						'Hail Mary': f"{netid_to_row[hail_mary_netid][name_column]} ({netid_to_row[hail_mary_netid][email_column]})"
+					})
+			except KeyError:
+				continue
+		hail_mary_df = pd.DataFrame(hail_mary_data)
+		st.table(hail_mary_df)
+
 	else:
 		st.error('Invalid Google Sheet URL or Sheet ID. Please enter a valid Google Sheet URL or Sheet ID, and make sure the Google Sheet is public to anyone with the link.')
