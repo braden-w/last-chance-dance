@@ -36,6 +36,7 @@ if google_sheet_input:
 		display_data = []
 		romantic_matches_pairs = set()
 		platonic_matches_pairs = set()
+		hail_mary_not_found = []
 
 		for current_netid, current_row in netid_to_row.items():
 			current_romantic_matches = []
@@ -125,10 +126,16 @@ if google_sheet_input:
 						"Sender's Last Name": current_row[name_column].split(', ')[1] if len(current_row[name_column].split(', ')) > 1 else "",
 						"Sender's Email": current_row[email_column]
 					})
+				else:
+						hail_mary_not_found.append(hail_mary_netid)
 			except KeyError:
-				continue
+					hail_mary_not_found.append(hail_mary_netid)
 		hail_mary_df = pd.DataFrame(hail_mary_data)
 		st.table(hail_mary_df)
+
+		if hail_mary_not_found:
+			st.subheader('Hail Mary NetIDs Not Found')
+			st.write(', '.join(hail_mary_not_found))
 
 		# Generate CSVs
 		romantic_matches_csv = pd.DataFrame([", ".join(pair) for pair in romantic_matches_pairs], columns=['Romantic Matches'])
