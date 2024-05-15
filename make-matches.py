@@ -66,12 +66,12 @@ if google_sheet_input:
 				'Name': row[name_column],
 				'NetID': netid,
 				'Email': row[email_column],
-				'Romantic Matches (NetIDs)': "\n".join([m['NetID'] for m in romantic_matches]),
-				'Romantic Matches (Names)': "\n".join([m['Name'] for m in romantic_matches]),
-				'Romantic Matches (Emails)': "\n".join([m['Email'] for m in romantic_matches]),
-				'Platonic Matches (NetIDs)': "\n".join([m['NetID'] for m in platonic_matches]),
-				'Platonic Matches (Names)': "\n".join([m['Name'] for m in platonic_matches]),
-				'Platonic Matches (Emails)': "\n".join([m['Email'] for m in platonic_matches])
+				'Romantic Matches (NetIDs)': "\n".join([match['NetID'] for match in romantic_matches]),
+				'Romantic Matches (Names)': "\n".join([match['Name'] for match in romantic_matches]),
+				'Romantic Matches (Emails)': "\n".join([match['Email'] for match in romantic_matches]),
+				'Platonic Matches (NetIDs)': "\n".join([match['NetID'] for match in platonic_matches]),
+				'Platonic Matches (Names)': "\n".join([match['Name'] for match in platonic_matches]),
+				'Platonic Matches (Emails)': "\n".join([match['Email'] for match in platonic_matches])
 			})
 
 		# Filter out participants who did not get any matches
