@@ -36,32 +36,42 @@ if google_sheet_input:
 		display_data = []
 
 		for netid, row in index_data.items():
-			romantic_match_names = []
-			platonic_match_names = []
+			romantic_matches = []
+			platonic_matches = []
 
 			# Get romantic matches
 			try:
 				romantic_netids = row[romantic_matches_column].split('\n')
-				romantic_match_found = [match for match in romantic_netids if netid in index_data.get(match, {}).get(romantic_matches_column, '').split('\n')]
-				romantic_match_names = [index_data[match][name_column] for match in romantic_match_found]
+				romantic_matches = [{
+						'NetID': match,
+						'Name': index_data[match][name_column],
+						'Email': index_data[match][email_column]
+				} for match in romantic_netids if match in index_data and netid in index_data.get(match, {}).get(romantic_matches_column, '').split('\n')]
 			except AttributeError:
-				romantic_match_names = []
+				romantic_matches = []
 
 			# Get platonic matches
 			try:
 				platonic_netids = row[platonic_matches_column].split('\n')
-				platonic_match_found = [match for match in platonic_netids if netid in index_data.get(match, {}).get(platonic_matches_column, '').split('\n')]
-				platonic_match_names = [index_data[match][name_column] for match in platonic_match_found]
+				platonic_matches = [{
+						'NetID': match,
+						'Name': index_data[match][name_column],
+						'Email': index_data[match][email_column]
+				} for match in platonic_netids if match in index_data and netid in index_data.get(match, {}).get(platonic_matches_column, '').split('\n')]
 			except AttributeError:
-				platonic_match_names = []
+				platonic_matches = []
 
 			# Prepare data for display
 			display_data.append({
 				'Name': row[name_column],
 				'NetID': netid,
 				'Email': row[email_column],
-				'Romantic Matches': "\n".join(romantic_match_names),
-				'Platonic Matches': "\n".join(platonic_match_names)
+				'Romantic Matches (NetIDs)': "\n".join([m['NetID'] for m in romantic_matches]),
+				'Romantic Matches (Names)': "\n".join([m['Name'] for m in romantic_matches]),
+				'Romantic Matches (Emails)': "\n".join([m['Email'] for m in romantic_matches]),
+				'Platonic Matches (NetIDs)': "\n".join([m['NetID'] for m in platonic_matches]),
+				'Platonic Matches (Names)': "\n".join([m['Name'] for m in platonic_matches]),
+				'Platonic Matches (Emails)': "\n".join([m['Email'] for m in platonic_matches])
 			})
 
 		display_df = pd.DataFrame(display_data)
