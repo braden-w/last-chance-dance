@@ -88,7 +88,7 @@ if google_sheet_input:
 				romantic_matches_data.append({
 					'Name': row['Name'],
 					'Email': row['Email'],
-					'Romantic Matches': row['Romantic Matches (Names)']
+					'Romantic Matches': f"{row['Romantic Matches (Names)']} ({row['Romantic Matches (Emails)']})"
 				})
 		romantic_df = pd.DataFrame(romantic_matches_data)
 		st.table(romantic_df)
@@ -100,7 +100,7 @@ if google_sheet_input:
 				platonic_matches_data.append({
 					'Name': row['Name'],
 					'Email': row['Email'],
-					'Platonic Matches': row['Platonic Matches (Names)']
+					'Platonic Matches': f"{row['Platonic Matches (Names)']} ({row['Platonic Matches (Emails)']})"
 				})
 		platonic_df = pd.DataFrame(platonic_matches_data)
 		st.table(platonic_df)
