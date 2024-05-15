@@ -66,17 +66,13 @@ if google_sheet_input:
 				'Name': current_row[name_column],
 				'NetID': current_netid,
 				'Email': current_row[email_column],
-				'Romantic Matches (NetIDs)': "\n".join([match['NetID'] for match in current_romantic_matches]),
-				'Romantic Matches (Names)': "\n".join([match['Name'] for match in current_romantic_matches]),
-				'Romantic Matches (Emails)': "\n".join([match['Email'] for match in current_romantic_matches]),
-				'Platonic Matches (NetIDs)': "\n".join([match['NetID'] for match in current_platonic_matches]),
-				'Platonic Matches (Names)': "\n".join([match['Name'] for match in current_platonic_matches]),
-				'Platonic Matches (Emails)': "\n".join([match['Email'] for match in current_platonic_matches])
+				'Romantic Matches': current_romantic_matches,
+				'Platonic Matches': current_platonic_matches
 			})
 
 		# Filter out participants who did not get any matches
 		display_df = pd.DataFrame(display_data)
-		display_df = display_df[(display_df['Romantic Matches (NetIDs)'] != '') | (display_df['Platonic Matches (NetIDs)'] != '')]
+		display_df = display_df[(display_df['Romantic Matches'].map(len) > 0) | (display_df['Platonic Matches'].map(len) > 0)]
 		st.table(display_df)
 		# Display count
 		st.write(f'Total number of rows: {len(display_df)}')
@@ -84,11 +80,11 @@ if google_sheet_input:
 		st.subheader('Romantic Matches')
 		romantic_matches_data = []
 		for row in display_data:
-			if row['Romantic Matches (Names)']:
+			if row['Romantic Matches']:
 				romantic_matches_data.append({
 					'Name': row['Name'],
 					'Email': row['Email'],
-					'Romantic Matches': f"{row['Romantic Matches (Names)']} ({row['Romantic Matches (Emails)']})"
+					'Romantic Matches': ', '.join([f"{match['Name']} ({match['Email']})" for match in row['Romantic Matches']])
 				})
 		romantic_df = pd.DataFrame(romantic_matches_data)
 		st.table(romantic_df)
@@ -96,11 +92,11 @@ if google_sheet_input:
 		st.subheader('Platonic Matches')
 		platonic_matches_data = []
 		for row in display_data:
-			if row['Platonic Matches (Names)']:
+			if row['Platonic Matches']:
 				platonic_matches_data.append({
 					'Name': row['Name'],
 					'Email': row['Email'],
-					'Platonic Matches': f"{row['Platonic Matches (Names)']} ({row['Platonic Matches (Emails)']})"
+					'Platonic Matches': ', '.join([f"{match['Name']} ({match['Email']})" for match in row['Platonic Matches']])
 				})
 		platonic_df = pd.DataFrame(platonic_matches_data)
 		st.table(platonic_df)
