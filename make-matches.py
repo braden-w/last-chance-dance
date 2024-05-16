@@ -62,7 +62,7 @@ hail_mary_column = st.text_input(
     "Enter the column name with the hail mary option", "The Hail Mary"
 )
 
-        # Convert relevant columns to lowercase
+# Convert relevant columns to lowercase
 data[netid_column] = data[netid_column].str.lower()
 data[romantic_matches_column] = data[romantic_matches_column].str.lower()
 data[platonic_matches_column] = data[platonic_matches_column].str.lower()
